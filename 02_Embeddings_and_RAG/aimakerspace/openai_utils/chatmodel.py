@@ -1,27 +1,25 @@
-from openai import OpenAI
-from dotenv import load_dotenv
 import os
+import requests
 
-load_dotenv()
+class ChatModel:
+    def __init__(self, model="gpt-3.5-turbo"):
+        self.model = model
+        self.api_key = os.getenv("OPENAI_API_KEY")
+        if not self.api_key:
+            raise ValueError("OPENAI_API_KEY not set.")
 
+    def run(self, messages):
+        url = "https://api.openai.com/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        body = {
+            "model": self.model,
+            "messages": messages
+        }
 
-class ChatOpenAI:
-    def __init__(self, model_name: str = "gpt-4o-mini"):
-        self.model_name = model_name
-        self.openai_api_key = os.getenv("OPENAI_API_KEY")
-        if self.openai_api_key is None:
-            raise ValueError("OPENAI_API_KEY is not set")
+        response = requests.post(url, headers=headers, json=body)
+        response.raise_for_status()
 
-    def run(self, messages, text_only: bool = True, **kwargs):
-        if not isinstance(messages, list):
-            raise ValueError("messages must be a list")
-
-        client = OpenAI()
-        response = client.chat.completions.create(
-            model=self.model_name, messages=messages, **kwargs
-        )
-
-        if text_only:
-            return response.choices[0].message.content
-
-        return response
+        return response.json()["choices"][0]["message"]["content"]
