@@ -1,0 +1,11 @@
+1. 🎉 Introduction to the Llama-3 model advancements
+
+2. 🌟 Key achievement: extending context length from 8,000 to 80,000 tokens
+
+3. 🔧 Techniques used: Quantized Low-Rank Adaptation (QLoRA)
+
+4. ⚡ Efficiency of the training process
+
+5. 🌍 Implications of extended context length in various applications
+
+6. 🙌 Acknowledgment of the research team and upcoming resource releases
